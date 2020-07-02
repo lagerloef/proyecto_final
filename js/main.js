@@ -85,7 +85,7 @@ var datos = [
     "description":"16G 1G 7 Pulgadas",
     "dictionary":"tableta",
     "img2":"images/Tablet_Lenovo_TB7305F_5.png",
-    "img3":"images/Caracterítica_TB_Lenovo.pngT1.png",
+    "img3":"images/Caracterítica_TB_Lenovo.png",
     "precio":9499
     },
     {
