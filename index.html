@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap 4 Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="css/coderhouse.css">
+  <script defer src="js/main.js"></script>
+</head>
+<body>
+
+  <body>
+    <header>
+        <div >
+            <div class="col-sm-2">
+                <span class="logo">CompuTienda</span>
+            </div>
+        </div>
+    </header>
+    
+    <div id="modal-List">
+
+    </div>
+    
+   
+    <section class="search-box container">
+        <form id="form-search">
+            <div class="row">
+                <div class="col-md-10">
+                    <input type="text" id="search-box-input" value=""/>                    
+                </div>
+                <div class="col-md-2">
+                    <button id="search-button" type="button" class="btn -primary -block">Buscar</button>                   
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <section class="search-results container">
+        <div class="row ">
+            <div class="col-md-10"><p id="result"><strong id="count-product"></strong><strong><span id="item-search"></span></strong></p></div>
+        </div>
+        <div class="row">            
+            <div class="col-md-10" > 
+              <div class="row" id="show-box">
+
+              </div>                      
+            </div>      
+                
+            <div class="col-md-2">
+                <h2 id="count-cart"><b>de compras (0)</b></h2>
+                <ul id="list-cart">
+                    
+                </ul>
+                <div id="cost-shopping-Cart">                   
+                </div>
+                
+                <input type="button" class=" btn-small btn -secondary" value="Vaciar carrito" onClick=emptyCart()>
+                <input type="button" class="btn -primary" value="Comprar">
+            </div>  
+        </div>
+    </section>
+
+    <footer>
+        <div class="grid">
+            <div class="col-md-6">
+                El Salvador 5218, Piso 3 Oficina 308, Palermo Soho, CP 1414, Buenos Aires, Argentina<br>
+                © 2020 Coderhouse, todos los derechos reservados.
+            </div>
+        </div>        
+    </footer>      
+    
+</body>
+</html>
