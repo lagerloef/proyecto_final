@@ -210,12 +210,12 @@ function showProducts(productList){
     productList.forEach(item => {
 
         html=html+`        
-        <div class="col-md-4">
+        <div class="col-lg-4  col-md-5 ">
             <article class="search-item">
-                <div class="col-md-8" >
+                <div class="col-" >
                     <img id="test" src = "${item.img}" width=200px>
                 </div>
-                <div class="col-md-8">
+                <div class="col-">
                     <h2>${item.typeProduct} ${item.description}</h2>
                     <p>$${item.precio}</p>
                     <div> 
