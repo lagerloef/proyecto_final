@@ -5,131 +5,7 @@ var searchBoxInput;
 var searchBoxInputValue;
 var searchWords=[];
 
-//Lista de los Productos del JSON
-
-var datos = [
-    {    
-    "id":"NB000001",
-    "img":"images/Notebook_GADNIC_GLOWN.png",
-    "typeProduct":"Notebook GADNIC GLOWN",    
-    "description":"Intel Atom x5 Z8350 14 Pulgada",
-    "dictionary":"portatil computadora pc ordenador laptop",
-    "img2":"images/Notebook_GADNIC_GLOWN_3p.png",
-    "img3":"images/Caracterítica_Gadnic.png",
-    "precio":47999
-    },    
-    {
-    "id":"NB000002",
-    "img":"images/Lenovo_V15_IIL.png",
-    "typeProduct":"Notebook Lenovo V15 IIL",    
-    "description":"Intel Core i7 -1065G7 15.6 Pulgada",
-    "dictionary":"portatil computadora pc ordenador laptop",
-    "img2":"images/Lenovo_V15_IIL_122999_2p.png",
-    "img3":"images/Caracterítica_Lenovo_V15 IIL.png",
-    "precio":122999
-    },
-    {
-    "id":"NB000003",
-    "img":"images/Notebook_HP_240_g5.png",
-    "typeProduct":"Notebook HP 240",     
-    "description":"Core i5 I58265U 14 Pulgada",
-    "dictionary":"portatil computadora pc ordenador laptop",
-    "img2":"images/características_HP_240_2p.png",
-    "img3":"images/Caracterítica_HP_240.png",
-    "precio":89999
-    },
-    {
-    "id":"NB000004",
-    "img":"images/Laptop_Cloudbook.png",
-    "typeProduct":"Notebook CX 23500W",    
-    "description":"Intel Atom x5 Z8350 14,1 Pulgada",
-    "dictionary":"portatil computadora pc ordenador laptop",
-    "img2":"images/Laptop_Cloudbook_CX_2p.png",
-    "img3":"images/Caracterítica_CX_23500W.png",
-    "precio":48999
-    },
-    {
-    "id":"NB000005",
-    "img":"images/Laptop_HP 240.png",
-    "typeProduct":"Notebook HP 240 G7 6GH55LT",     
-    "description":"Core i5 I58265U 14 Pulgadas",
-    "dictionary":"portatil computadora pc ordenador laptop",
-    "img2":"images/Notebook_HP_240_g7_109999_3p.png",
-    "img3":"images/Caracterítica_HP_240_G7.png", 
-    "precio":109999    
-    },
-    {
-    "id":"NB000006",
-    "img":"images/Laptop_HP 14-dq1040wm.png",
-    "typeProduct":"Notebook HP 14-dq1040wm",    
-    "description":"Intel Core i5 -1035G1 14 Pulgadas",
-    "dictionary":"portatil computadora pc ordenador laptop",
-    "img2":"images/Notebook HP 14-dq1040wm_122999_3p.png",
-    "img3":"images/Caracterítica_HP_14_dqqp40wm.png",
-    "precio":122999
-    },       
-    {
-    "id":"TB000001",
-    "img":"images/tablet_Alcatel.png",
-    "typeProduct":"Tablet Alcatel 1T 8082",    
-    "description":"16G 1G 10.1 Pulgadas",
-    "dictionary":"tableta",
-    "img2":"images/Tablet_Alcatel_1T 8082_3.png",
-    "img3":"images/Caracterítica_TB_Alcatel_T1.png",
-    "precio":12999
-    },
-    {
-    "id":"TB000002",
-    "img":"images/Tablet_Lenovo_TB7305F.png",
-    "typeProduct":"Tablet Lenovo TBT305",     
-    "description":"16G 1G 7 Pulgadas",
-    "dictionary":"tableta",
-    "img2":"images/Tablet_Lenovo_TB7305F_5.png",
-    "img3":"images/Caracterítica_TB_Lenovo.png",
-    "precio":9499
-    },
-    {
-    "id":"TB000003",
-    "img":"images/Tablet_TCL_LT7M.png",
-    "typeProduct":"Tablet TCL LT7-M",     
-    "description":"16G 1G 7 Pulgadas",
-    "dictionary":"tableta",
-    "img2":"images/Tablet_TCL_LT7-M_4.png",
-    "img3":"images/Caracterítica_TB_TCL_T7_PRIME.png",
-    "precio":8999
-    },
-    
-    {
-    "id":"CI000001",
-    "img":"images/celular_alcatel.png",
-    "typeProduct":"Celular Alcatel 1",    
-    "description":"16G 1G 5 Pulgadas",
-    "dictionary":"celular, mobil, smartphone, telefono, teléfono",
-    "img2":"images/celular_alcatel_1_1p.png",
-    "img3":"images/Caracterítica_CI_Alcatel_1.png",
-    "precio":9999
-    },
-    {
-    "id":"CI000002",
-    "img":"images/Celular_LG_K9.png",
-    "typeProduct":"Celular LG K9",     
-    "description":"16G 2G 5 Pulgadas",
-    "dictionary":"celular, mobil, smartphone, telefono, teléfono",
-    "img2":"images/detalles_celular_LG_K9_1_p.png",
-    "img3":"images/Caracterítica_CI_LG_K9.png",
-    "precio":12999
-    },
-    {
-    "id":"CI000003",
-    "img":"images/celular_motorola.png",
-    "typeProduct":"Celular MOTOROLA E6 PLUS",     
-    "description":"64G 4G 6.1 Pulgadas",
-    "dictionary":"celular, mobil, smartphone, telefono, teléfono",
-    "img2":"images/detalles_celular_motorola_1p.png",
-    "img3":"images/Caracterítica_CI_Motorola_E6_Plus.png",
-    "precio":23999
-    }           
-];
+//Lista de los Productos del JSON  en data.js
 
 // descarga el HTML para el boton deescripción
 function showModal(modalList){
@@ -143,7 +19,7 @@ function showModal(modalList){
         
         <!-- The Modal -->
         <div class="modal fade" id="${item.id}D">
-            <div class="modal-dialog modal-md">
+            <div class="modal-dialog">
                 <div class="modal-content">
           
                     <!-- Modal Header -->
@@ -213,7 +89,7 @@ function showProducts(productList){
         <div class="col-lg-4  col-md-5 ">
             <article class="search-item">
                 <div class="col-" >
-                    <img id="test" src = "${item.img}" width=200px>
+                    <img id="test" src = "${item.img}">
                 </div>
                 <div class="col-">
                     <h2>${item.typeProduct} ${item.description}</h2>
@@ -340,10 +216,28 @@ function getProductInputSearch(event){
             searchResult.push(item);
         }
      })
-    console.log(searchResult);
+    //console.log(searchResult);
     
-    
-    $("#result").html(`<b>${searchResult.length}</b> resultados para la búsqueda <b>${searchBoxInput.val()}</b>`);    
+
+   
+    $("#result").html(`<b>${searchResult.length}</b> resultados para la búsqueda <b>${searchBoxInput.val()}</b>
+        <button type="button" id="home" class="tertiary" >ir a inicio</button>`);    
+
+    $("#home").click(function(){
+        $("#show-box").html(showProducts(datos));
+        $("#result").html("");
+        $("#search-box-input").val("");
+
+        //activar el click del carrito de compra
+        $(".add-cart").click(function() {
+        var idProduct=$(this).attr("id");
+        addToCart(idProduct);    
+
+
+      });
+
+    });    
+
     $("#show-box").html(showProducts(searchResult));
     $(".add-cart").click(function() {
         var idProduct=$(this).attr("id");
@@ -359,9 +253,7 @@ function getProductInputSearch(event){
 
 $(document).ready(function(){
     $("#modal-List").html(showModal(datos));
-    
     $("#show-box").html(showProducts(datos));    
-
     $(".add-cart").click(function() {
         var idProduct=$(this).attr("id");
         addToCart(idProduct);
@@ -388,7 +280,7 @@ $(document).ready(function(){
 
     searchBoxInput.keyup(function() {
         var entrada=searchBoxInput.val();        
-        if(entrada.length>1){
+        if(entrada.trim().length>1 ){
             $("#search-button").attr("disabled",false);}
         else {$("#search-button").attr("disabled",true);}
         
@@ -397,13 +289,15 @@ $(document).ready(function(){
     
     // para activar el enter en el formulario
     
-    formSearch = document.getElementById("form-search");
+    //formSearch = document.getElementById("form-search");
     
    
     formSearch = $("#form-search")
     formSearch.submit(function( event ) {
-        event.preventDefault();    
-        if ($("#search-button").attr("disabled",false)) {getProductInputSearch();}  
+        event.preventDefault();
+        if ($("#search-button").attr("disabled")!="disabled") {getProductInputSearch();}
+        
+        
     });  
 
 });  
