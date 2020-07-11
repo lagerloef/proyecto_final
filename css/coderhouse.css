@@ -7,7 +7,7 @@ h2 {
     font-size: 12px;
 }
 
-header {
+header .logo {
     width: 100%;
     background-color: black;
 }

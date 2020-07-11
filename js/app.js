@@ -1,14 +1,8 @@
-//variables
+var carrito;
+var searchResult;
 
-var searchButton;
-var searchBoxInput;
-var searchBoxInputValue;
-var searchWords=[];
-
-//Lista de los Productos del JSON  en data.js
-
-// descarga el HTML para el boton deescripción
-function showModal(modalList){
+//Generación de la estructura HTML del Modal
+function renderModal(modalList){
     var html2="";
 
     modalList.forEach(item => {
@@ -77,9 +71,9 @@ function showModal(modalList){
 
 }
 
-// La función que muestra la lista de Productos en el HTML
+//Generación de la estructura HTML de la lista de productos
 
-function showProducts(productList){
+function renderProducts(productList){
     
     var html="";
 
@@ -98,36 +92,49 @@ function showProducts(productList){
                         <!-- Button to Open the Modal -->                                  
                         <button type="button" class="btn -primary" data-toggle="modal" data-target="#${item.id}D">Ver detalle
                         </button>
-                        <button type="button" id=${item.id} class="btn -secondary add-cart"  >Agregar al carrito</button>                 
+                        <input type="button" class="btn -secondary"  value="Agregar al carrito" onclick="addToCart('${item.id}')">                 
                     </div>
                 </div>
             </article>        
         </div>`
         
     });
-    return html  
-    
+    return html     
+}
+
+//En shoppingcart.js disponemos de la función constructora ShoppingCart
+
+//para renderizar el carrito de Compra
+
+function renderShoppingCart(datos){
+
+    $("#count-cart").html(`<b>Carrito de compras (${carrito.get().length})</b>`);
+    $("#list-cart").html(carrito.show());
+    if (carrito.get().length>0){        
+        
+        $("#cost-shopping-Cart").html(`<p>El precio total es <strong>$${carrito.totalPrice()}</strong></p>`);
+        } 
+    else  emptyCart();
 }
 
 
-
-//Carrito de Compras
-
-//onclick para agregar productos en el carrito de compra
-
-function addToCart(pid){    
+function addToCart(pid){               
            datos.forEach(item =>{
             if (item.id==pid){
-                carrito.add(item)
-            }
+                carrito.add(item)                
+            } 
            });
-          $("#count-cart").html(`<b>Carrito de compras (${carrito.get().length})</b>`);
-          $("#list-cart").html(carrito.show());          
-          $("#cost-shopping-Cart").html(`<p> El costo total es $${carrito.totalPrice()}</p>`);
+
+           renderShoppingCart(carrito);          
         }
 
+function removeFromCart(pid){
+        carrito.del(pid);
+        renderShoppingCart(carrito);
 
-//onclick para agregar vaciar el carrito de compra
+         }
+
+//Para vaciar el carrito de Compra       
 
 function emptyCart(){
     carrito.empty();           
@@ -138,70 +145,27 @@ function emptyCart(){
           $("#cost-shopping-Cart").html("");  
         }
 
-      
+// EL llamado para hacer la descarga
 
-    //Funcion constructora de las propiedades y métodos del carrito de compra  
-
-function ShoppingCart() {
-    this.cart = [];
-    
-    this.get = function() {
-        return this.cart;
-    }
-
-    this.add = function(item) {
-        this.cart.push(item); 
-        localStorage.setItem('savedCart', JSON.stringify(this.cart));              
-    }
-
-    this.show = function(){
-        var html=""; 
-        this.cart.forEach(item =>{
-        html=html+`<li>${item.typeProduct} ,$${item.precio}</li>`;
-        
-    }) 
-    return html;   
-    
-    }
-
-    this.totalPrice = function(){
-        var price=0;
-        this.cart.forEach(item =>{
-            price+=item.precio;
-        })
-        return price
-
-    }
-
-        this.empty = function(item) {
-        this.cart=[];
-        localStorage.setItem('savedCart', JSON.stringify(this.cart));
-    }
-
-    this.fill = function(){
-        this.cart = (localStorage.getItem('savedCart')) ? JSON.parse(localStorage.getItem('savedCart')) : [];
-        //console.log(this.cart);
-       
-        }
-
-};
-
+//Elimina espacios vacios
 
 function noSpace(x){
     return x != ""
  }    
 
+//Para obtener los Productos de la búsqueda
+
 function getProductInputSearch(event){
    
     var searchBoxInput= $("#search-box-input");   
     
-    var searchBoxInputValue=searchBoxInput.val();   
-    searchWords=searchBoxInputValue.split(" ");
-  
-    searchWords=searchWords.filter(noSpace);
+    var searchBoxInputValue=searchBoxInput.val();//Valor del Item buscado
+    searchWords=searchBoxInputValue.split(" ");//separa la cadena de texto con espacio  
+    searchWords=searchWords.filter(noSpace);//Elimina espacios vacios para no considerarlos en el array
 
+    var searchResult=[];// Se guarda el arrays con las palabras insertadas en la búsqueda
 
-    var searchResult=[];
+    //Se busca cada palabra en nuestra base de datos 
     datos.forEach(item=>{
         var times=0;
         searchWords.forEach(word=>{
@@ -214,71 +178,40 @@ function getProductInputSearch(event){
         })
         if (times>0) {
             searchResult.push(item);
+
         }
      })
-    //console.log(searchResult);
-    
-
    
     $("#result").html(`<b>${searchResult.length}</b> resultados para la búsqueda <b>${searchBoxInput.val()}</b>
-        <button type="button" id="home" class="tertiary" >ir a inicio</button>`);    
+        `);    
 
     $("#home").click(function(){
-        $("#show-box").html(showProducts(datos));
+        $("#show-box").html(renderProducts(datos));
         $("#result").html("");
-        $("#search-box-input").val("");
-
-        //activar el click del carrito de compra
-        $(".add-cart").click(function() {
-        var idProduct=$(this).attr("id");
-        addToCart(idProduct);    
-
-
-      });
+        $("#search-box-input").val(""); 
 
     });    
 
-    $("#show-box").html(showProducts(searchResult));
-    $(".add-cart").click(function() {
-        var idProduct=$(this).attr("id");
-        addToCart(idProduct);
-      });
+    $("#show-box").html(renderProducts(searchResult));    
 
-    return searchResult;        
-
+    return searchResult; 
 }
 
 
-// EL llamado para hacer la descarga JS
-
 $(document).ready(function(){
-    $("#modal-List").html(showModal(datos));
-    $("#show-box").html(showProducts(datos));    
-    $(".add-cart").click(function() {
-        var idProduct=$(this).attr("id");
-        addToCart(idProduct);
-      });
-    
 
-    carrito = new ShoppingCart();
-    carrito.fill(); 
-    $("#count-cart").html(`<b>Carrito de compras (${carrito.get().length})</b>`);    
-    $("#list-cart").html(carrito.show());
-    if (carrito.get().length>0){        
-        
-        $("#cost-shopping-Cart").html(`<p> El precio total es <strong>$${carrito.totalPrice()}</strong>`);
-        }
-    
-    //Búsqueda de Productos
+$("#show-box").html(renderProducts(datos));//renderizar todos los productos
+$("#modal-List").html(renderModal(datos));//renderizar el modal
+carrito= new ShoppingCart;
+carrito.fill();
+renderShoppingCart(datos);//renderizar los datos del carrito de compra
 
-    searchButton = $("#search-button");
-
-    searchButton.attr("disabled",true);
-    searchButton.click(function(){getProductInputSearch();})
-    
-    searchBoxInput=$("#search-box-input");
-
-    searchBoxInput.keyup(function() {
+//Búsqueda de Productos
+searchButton = $("#search-button");
+searchButton.attr("disabled",true);
+searchButton.click(function(){getProductInputSearch();}) //renderizar el resultado de la búsqueda desde el botón buscar   
+searchBoxInput=$("#search-box-input");
+searchBoxInput.keyup(function() {
         var entrada=searchBoxInput.val();        
         if(entrada.trim().length>1 ){
             $("#search-button").attr("disabled",false);}
@@ -286,20 +219,12 @@ $(document).ready(function(){
         
       });
 
-    
-    // para activar el enter en el formulario
-    
-    //formSearch = document.getElementById("form-search");
-    
-   
-    formSearch = $("#form-search")
-    formSearch.submit(function( event ) {
-        event.preventDefault();
-        if ($("#search-button").attr("disabled")!="disabled") {getProductInputSearch();}
-        
-        
-    });  
+// Al hacer enter en el formulario
+formSearch = $("#form-search");
+formSearch.submit(function( event ) {
+    event.preventDefault();// no enviar el submit
+    if ($("#search-button").attr("disabled")!="disabled") {getProductInputSearch();} 
 
-});  
+})
 
-
+})
