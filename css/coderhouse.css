@@ -18,6 +18,13 @@ header div{
     color:white;
     font-size: 30px;
 }
+
+.titulo{
+    max-height: 300px;
+    text-align: center;
+    background-color:blueviolet;
+    color:white;
+}
 /*
 .search-box {
     margin: 36px 0;
@@ -66,6 +73,7 @@ article.search-item div {
     font-size: 12px;
 }
 
+
 .btn:disabled {
     opacity: 0.7;   
 }
@@ -98,8 +106,13 @@ article.search-item div {
     margin:2px;      
 }
 
-
-
+.hidden {
+    display: none;
+    }
+    
+#noPay, #information{
+    color:blue;
+}
 footer {
     border-top: 1px solid #000000;
     background: white;

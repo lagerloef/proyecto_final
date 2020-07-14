@@ -1,5 +1,92 @@
+//variables
 var carrito;
-var searchResult;
+var datos;
+var searchButton;
+var searchBoxInput;
+var searchBoxInputValue;
+var searchWords=[];
+var btnConfirm;
+
+//Renderizar el body del la estructura HTML del Modal de la orden de compra
+function renderModalOrden(){ 
+    $("#modalToBuy").html(`    
+    <div class="modal-dialog">
+        <div class="modal-content">          
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Orden de Compra  en CompuTienda</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>            
+            <!-- Modal body -->
+            <div class="modal-body">
+                    <div class=container>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                <li class="breadcrumb-item" id="step1Label">Paso 1</li>
+                                <li class="breadcrumb-item" id="step2Label">Paso 2</li>
+                                <li class="breadcrumb-item" id="step3Label">Resumen</li>
+                                </ol>
+                            </nav>
+                            </div>
+                            <div class="col-sm-12" id="step1">
+                                <form action="#" name="step1">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail">Email</label>
+                                        <input type="email" name="email" id="email" class="form-control" placeholder="Enter email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword">Password</label>
+                                        <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+                                    </div>
+                                    <button type="submit" class="btn btn-dark">Siguiente</button>
+                                </form>
+                            </div>
+                            <div class="col-sm-12" id="step2">
+                                <form action="#" name="step2">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Apellido</label>
+                                        <input type="text" name="apellido" id="apellido" class="form-control" placeholder="Apellido">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Nombre</label>
+                                        <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre">
+                                    </div>
+                                    <button type="submit" class="btn btn-dark">Siguiente</button>
+                                </form>
+                            </div>
+                            <div class="col-sm-12" id="resume">
+                                <div id="resumebuy">                                    
+                                    <h3 id="resumeName"></h3>
+                                    <p id="resumeEmail"></p>
+                                    <h2 id="titulo-order"></h2>
+                                    <ul id="list-order-shoppingCart"class="list-group"></ul> 
+                                    <h3 id="total-cost"></h3>
+                                    <div id="form-pay"></div>
+                                </div>
+                                <div class="col-sm-12" >                               
+                                    <p id="pay-display"></p>
+                                    <ul id="itemTobuy" class="list-group"></ul>
+                                    <h2 id="total-pay"></h2>
+                                    <p id="comment-display"></p>
+                                    <h2 id="information"></h2>
+                                </div>          
+                            </div>                                  
+                    </div>
+                    </div>
+            </div>            
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+            </div>            
+        </div>
+    </div>`); 
+
+    getBuycart();
+    
+}
+
 
 //Generación de la estructura HTML del Modal
 function renderModal(modalList){
@@ -71,6 +158,7 @@ function renderModal(modalList){
 
 }
 
+
 //Generación de la estructura HTML de la lista de productos
 
 function renderProducts(productList){
@@ -92,7 +180,7 @@ function renderProducts(productList){
                         <!-- Button to Open the Modal -->                                  
                         <button type="button" class="btn -primary" data-toggle="modal" data-target="#${item.id}D">Ver detalle
                         </button>
-                        <input type="button" class="btn -secondary"  value="Agregar al carrito" onclick="addToCart('${item.id}')">                 
+                        <input type="button" class="btn -secondary" value="Agregar al carrito" onclick="addToCart('${item.id}')">                 
                     </div>
                 </div>
             </article>        
@@ -106,17 +194,58 @@ function renderProducts(productList){
 
 //para renderizar el carrito de Compra
 
-function renderShoppingCart(datos){
-
-    $("#count-cart").html(`<b>Carrito de compras (${carrito.get().length})</b>`);
+function renderShoppingCart(datos){ 
+    $(".hidden").show(); 
+    $("#count-cart").html(`<b>Carrito de Compras (${carrito.get().length})</b>`);
     $("#list-cart").html(carrito.show());
-    if (carrito.get().length>0){        
-        
+    if (carrito.get().length>0){ 
         $("#cost-shopping-Cart").html(`<p>El precio total es <strong>$${carrito.totalPrice()}</strong></p>`);
         } 
     else  emptyCart();
 }
 
+
+//renderizar la orden de los productos a comprar
+
+function renderOrdenShoppingCart(){           
+    $("#titulo-order").html(`<strong>Lista de Productos a Comprar</strong>`);
+    $("#list-order-shoppingCart").html(carrito.showOrder());
+    $("#total-cost").html(`Total: <strong>$${carrito.totalPrice()}</strong>`);
+    $("#form-pay").html(`<div class=column-sm-12>
+        <label>Forma de Pago</label>    
+        <fieldset>
+            <h2 id="price-display"></h2>
+            <input type="radio" name="pay" value="C">Credito
+            <input type="radio" name="pay" value="D">Debito
+            <input type="radio" name="pay" value="T">Transferencia
+            <h2 id="noPay"></h2>
+            <input type="text" name="comment" class="form-control" placeholder="Comentario..."/>
+            <button type="button" class="btn btn-block btn-dark" id="btn-confirm">Confirmar pedido</button>
+        </fieldset>        
+        </div>`);
+    btnConfirm = $("#btn-confirm");
+    btnConfirm.click(function(){
+       
+        pay = $('input[name="pay"]:checked');        
+        comment =$('input[name="comment"]');
+        if (pay.val()=="C"||pay.val()=="D"||pay.val()=="T"){
+            $("#resumebuy").hide();
+            $("#noPay").html("");
+            $("#itemTobuy").html((carrito.showOrder()));            
+            $('#pay-display').html(`Modo de pago: ${pay.val()}`);            
+            $('#total-pay').html(`Total: <strong>$${carrito.totalPrice()}</strong>`);    
+            $('#comment-display').html(`${comment.val()}`);
+            $('#information').html(`<b>"En breves momentos nos comunicaremos a su correo para completar el pago"</b>`);
+        emptyCart();
+        
+        }
+        else
+            $("#noPay").html("Debe indicar la forma de Pago");
+                        
+
+});
+
+}
 
 function addToCart(pid){               
            datos.forEach(item =>{
@@ -124,28 +253,34 @@ function addToCart(pid){
                 carrito.add(item)                
             } 
            });
-
-           renderShoppingCart(carrito);          
+           renderShoppingCart(carrito);//Se debe rebderizar el carrito           
+           renderModalOrden();//se debe renderizar el modal          
         }
 
 function removeFromCart(pid){
-        carrito.del(pid);
-        renderShoppingCart(carrito);
 
-         }
+        carrito.del(pid);       
+        renderShoppingCart(carrito);//Se debe renderizar los artículos en el carrito        
+        renderModalOrden(); //al eliminar del carrito se debe renderizar la orden      
+
+        }
 
 //Para vaciar el carrito de Compra       
 
 function emptyCart(){
-    carrito.empty();           
-
-          
-          $("#count-cart").html(`<b>Carrito de compras (0)</b>`);          
+    carrito.empty();
+          $("#count-cart").html(`<b>Carrito de Compras (0)</b>`);          
           $("#list-cart").html(carrito.show());         
-          $("#cost-shopping-Cart").html("");  
+          $("#cost-shopping-Cart").html("");
+          $(".hidden").hide();  
         }
 
-// EL llamado para hacer la descarga
+//Para comprar lo indicado en el Carrito de Compra
+
+function buyOrder(){
+    order=carrito.cart
+   console.log(order[0]);
+}
 
 //Elimina espacios vacios
 
@@ -156,6 +291,7 @@ function noSpace(x){
 //Para obtener los Productos de la búsqueda
 
 function getProductInputSearch(event){
+
    
     var searchBoxInput= $("#search-box-input");   
     
@@ -197,21 +333,93 @@ function getProductInputSearch(event){
     return searchResult; 
 }
 
+function getBuycart() {            
+    // formato de la compra
+    $("#step2").hide();
+    $('#step1Label').css('font-weight', 'bold');
+    $("form[name='step1']").validate({
+        rules: {
+            email: {
+                required: true,
+                email: true
+            },
+            password: {
+                required: true,
+                minlength: 5
+            }
+        },
+        messages: {
+            email: {
+                required: 'El campo email es obligatorio',
+                email: 'Ingrese un email valido'
+            },
+            password: {
+                required: 'El campo password es obligatorio',
+                minlength: 'El password debe tener un minimo de 5 caracteres'
+            }            
+        },
+        submitHandler: function(form) {
+            $("#step1").slideUp("slow", function() {
+                $("#step2").slideDown("slow", function(){
+                    $('#step1Label').css('font-weight', 'normal');
+                    $('#step2Label').css('font-weight', 'bold');
+                })
+            });                    
+        }                
+    });
+
+    $("form[name='step2']").validate({
+        rules: {
+            apellido: {
+                required: true,
+            },
+            nombre: {
+                required: true,
+            }
+        },
+        messages: {
+            apellido: {
+                required: 'El campo apellido es obligatorio',
+            },
+            nombre: {
+                required: 'El campo nombre es obligatorio',
+            }            
+        },
+        submitHandler: function(form) {
+            $("#step2").slideUp("slow", function() {
+                $('#step2Label').css('font-weight', 'normal')
+                $('#step3Label').css('font-weight', 'bold')
+                $('#resumeName').html($('input[name="nombre"]').val() + " " + $('input[name="apellido"]').val());
+                $('#resumeEmail').html($('input[name="email"]').val());                                                
+                renderOrdenShoppingCart();                                
+            });                    
+        }                
+    });
+}
+
 
 $(document).ready(function(){
+    datos=[];
+    $.ajax({
+        method: 'GET',
+        url:"json/data.json",
+        dataType:'json'
+    }).done(function(data){ 
+        datos=data;
 
-$("#show-box").html(renderProducts(datos));//renderizar todos los productos
-$("#modal-List").html(renderModal(datos));//renderizar el modal
-carrito= new ShoppingCart;
-carrito.fill();
-renderShoppingCart(datos);//renderizar los datos del carrito de compra
+        $("#show-box").html(renderProducts(datos));//renderizar todos los productos
+        $("#modal-List").html(renderModal(datos));//renderizar el modal
+        carrito= new ShoppingCart;
+        carrito.fill();
+        renderShoppingCart(datos);//renderizar los datos del carrito de compra
+        renderModalOrden();        
 
-//Búsqueda de Productos
-searchButton = $("#search-button");
-searchButton.attr("disabled",true);
-searchButton.click(function(){getProductInputSearch();}) //renderizar el resultado de la búsqueda desde el botón buscar   
-searchBoxInput=$("#search-box-input");
-searchBoxInput.keyup(function() {
+        //Búsqueda de Productos
+        searchButton = $("#search-button");
+        searchButton.attr("disabled",true);
+        searchButton.click(function(){getProductInputSearch();}) //renderizar el resultado de la búsqueda desde el botón buscar   
+        searchBoxInput=$("#search-box-input");
+        searchBoxInput.keyup(function() {
         var entrada=searchBoxInput.val();        
         if(entrada.trim().length>1 ){
             $("#search-button").attr("disabled",false);}
@@ -219,12 +427,19 @@ searchBoxInput.keyup(function() {
         
       });
 
-// Al hacer enter en el formulario
-formSearch = $("#form-search");
-formSearch.submit(function( event ) {
-    event.preventDefault();// no enviar el submit
-    if ($("#search-button").attr("disabled")!="disabled") {getProductInputSearch();} 
+        // Al hacer enter en el formulario
+        formSearch = $("#form-search");
+        formSearch.submit(function( event ) {
+        event.preventDefault();// no enviar el submit
+        if ($("#search-button").attr("disabled")!="disabled") {getProductInputSearch();} 
 
-})
+        });        
+        
+         
+        
+    }).fail(function(error){
+        console.log(error);
+    }) 
+    
 
-})
+});

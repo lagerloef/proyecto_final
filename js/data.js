@@ -49,7 +49,7 @@ var datos = [
     "dictionary":"portatil computadora pc ordenador laptop",
     "img2":"images/Notebook_HP_240_g7_109999_3p.png",
     "img3":"images/Caracterítica_HP_240_G7.png", 
-    "precio":109999    
+    "precio":109999   
     },
     {
     "id":"NB000006",

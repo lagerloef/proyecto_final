@@ -13,12 +13,12 @@ function ShoppingCart() {
     }
 
     this.del = function(pid) {
-        var naco=0;
+        var i=0;
         this.cart.forEach(item =>{
             if (item.id==pid){
-                this.cart.splice(naco,1);                                
+                this.cart.splice(i,1);                                
             }            
-            naco=naco+1;
+            i=i+1;
         });        
         localStorage.setItem('savedCart', JSON.stringify(this.cart));
     }
@@ -27,6 +27,16 @@ function ShoppingCart() {
         var html=""; 
         this.cart.forEach(item =>{
         html=html+`<li class="list-group-item"><input type="button" class="btn-dark"  value="-" onclick="removeFromCart('${item.id}')">  ${item.typeProduct} ,$${item.precio}</li>`;
+        
+    }) 
+    return html;   
+    
+    }
+    //para mostrar la orden del carrito
+    this.showOrder = function(){
+        var html=""; 
+        this.cart.forEach(item =>{
+        html=html+`<li class="list-group-item">${item.typeProduct}, ${item.description} ,$${item.precio}</li>`;
         
     }) 
     return html;   
@@ -42,7 +52,7 @@ function ShoppingCart() {
 
     }
 
-        this.empty = function(item) {
+    this.empty = function(item) {
         this.cart=[];
         localStorage.setItem('savedCart', JSON.stringify(this.cart));
     }
