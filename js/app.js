@@ -17,7 +17,7 @@ function renderProducts(productList){
     productList.forEach(item => {
 
         html=html+`        
-        <div class="col-lg-4  col-md-5 ">
+        <div class="col-lg-3  col-md-4  col-sm-6">
             <article class="search-item">
                 <div class="col-" >
                     <img id="test" src = "${item.img}">
@@ -45,7 +45,7 @@ function renderProducts(productList){
 
 function renderShoppingCart(datos){ 
     $(".hidden").show(); 
-    $("#count-cart").html(`<b>Carrito de Compras (${carrito.get().length})</b>`);
+    $("#count-cart").html(`<b>(${carrito.get().length})</b>`);
     $("#list-cart").html(carrito.show());
     if (carrito.get().length>0){ 
         $("#cost-shopping-Cart").html(`<p>El precio total es <strong>$${carrito.totalPrice()}</strong></p>`);
@@ -56,7 +56,8 @@ function renderShoppingCart(datos){
 
 //renderizar la orden de los productos a comprar
 
-function renderOrdenShoppingCart(){           
+function renderOrdenShoppingCart(){
+            
     $("#titulo-order").html(`<strong>Lista de Productos a Comprar</strong>`);
     $("#list-order-shoppingCart").html(carrito.showOrder());
     $("#total-cost").html(`Total: <strong>$${carrito.totalPrice()}</strong>`);
@@ -118,7 +119,7 @@ function removeFromCart(pid){
 
 function emptyCart(){
     carrito.empty();
-          $("#count-cart").html(`<b>Carrito de Compras (0)</b>`);          
+          $("#count-cart").html(`<b>(0)</b>`);          
           $("#list-cart").html(carrito.show());         
           $("#cost-shopping-Cart").html("");
           $(".hidden").hide();  
@@ -260,6 +261,9 @@ $(document).ready(function(){
         $("#modal-List").html(renderModal(datos));//renderizar el modal
         carrito= new ShoppingCart;
         carrito.fill();
+        $("#flip").click(function(){
+            $("#panel").slideToggle("slow");
+          });  
         renderShoppingCart(datos);//renderizar los datos del carrito de compra
         renderModalOrden();        
 
