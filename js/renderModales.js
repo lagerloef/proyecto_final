@@ -69,7 +69,8 @@ function renderModalOrden(){
             </div>            
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
+                <input type="button" id="cancelar"  class="btn btn-dark" value="Cancelar" onClick="renderModalOrden()">
             </div>            
         </div>
     </div>`); 

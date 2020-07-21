@@ -86,6 +86,7 @@ function renderOrdenShoppingCart(){
             $('#total-pay').html(`Total: <strong>$${carrito.totalPrice()}</strong>`);    
             $('#comment-display').html(`${comment.val()}`);
             $('#information').html(`<b>"En breves momentos nos comunicaremos a su correo para completar el pago"</b>`);
+            $("#cancelar").hide();
         emptyCart();
         
         }
@@ -103,7 +104,7 @@ function addToCart(pid){
                 carrito.add(item)                
             } 
            });
-           renderShoppingCart(carrito);//Se debe rebderizar el carrito           
+           renderShoppingCart(carrito);//Se debe renderizar el carrito           
            renderModalOrden();//se debe renderizar el modal          
         }
 
